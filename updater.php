@@ -82,16 +82,28 @@ if(isset($_GET['c'])){
 		'newfile'=>$newfile
 	)));
 }elseif(isset($_GET['operation'])&&isset($_GET['path'])){
+	$p=$_GET['path'];
+	if(preg_match('/\.{2,}/',$p))
+		die('bad');
 	switch($_GET['opearation']){
 	case'd':
+		unlink($p);
 		break;
 	case'r':
+		rmdir($p);
 		break;
 	case'm':
+	case'n':
+		$c=get('repos/'.REPO.'/contents/'.$p);
+		if($c&&isset($c['content'])&&$c['encoding']=='base64'){
+			$fp=fopen($p,'w');
+			fwrite($fp,base64_decode($c['content']));
+			fclose($fp);
+		}else
+			die('bad');
 		break;
 	case'c':
-		break;
-	case'n':
+		mkdir($p);
 		break;
 	}
 	sleep(1);
@@ -226,6 +238,9 @@ a){var b=F.exec(a);b&&(b[1]=(b[1]||"").toLowerCase(),b[3]=b[3]&&new RegExp("(?:^
 	</div>
 	<div class="block">
 		<h2>Update site</h2>
+		<p>
+			Last update:<?php echo $current_state['last_update'];?>
+		</p>
 		<div id="updater">
 			Checking for update...
 		</div>
