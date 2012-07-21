@@ -8,7 +8,7 @@ define('REPO','davidaq/PHP-Tools');		// the repo to synchronize with
 // Don't modify the codes below if u are not sure of what these are
 session_start();
 $current_state=json_decode(<<<CURRENT_STATE
-{"last_update":"never","ls":[]}
+{"last_update":"2012-07-21 12:27:24","ls":[{"path":"readme","type":"file","sha":"e126f8385f3bf3347e86919cade74e8849c680bb"},{"path":"test","type":"dir"},{"path":"test\/readme","type":"file","sha":"e126f8385f3bf3347e86919cade74e8849c680bb"},{"path":"test\/test","type":"dir"},{"path":"test\/test\/readme","type":"file","sha":"e126f8385f3bf3347e86919cade74e8849c680bb"},{"path":"test\/test\/test","type":"dir"},{"path":"test\/test\/test\/readme","type":"file","sha":"e126f8385f3bf3347e86919cade74e8849c680bb"},{"path":"test\/test\/test\/updater.php","type":"file","sha":"6b834f88d363dfbbf330222bac17db51cfa2788a"},{"path":"test\/test\/updater.php","type":"file","sha":"64046bf477d4ada6e5d70a2ab2b4d8039b564211"},{"path":"test\/updater.php","type":"file","sha":"cf0e3348f78e6e6997a98638269721938f416125"},{"path":"updater.php","type":"file","sha":"cf0e3348f78e6e6997a98638269721938f416125"}]}
 CURRENT_STATE
 ,true);
 function get($url){

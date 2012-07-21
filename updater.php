@@ -103,7 +103,11 @@ if(isset($_GET['c'])){
 			die('bad');
 		break;
 	case'c':
-		mkdir($p);
+		if(file_exists($p)){
+			if(!is_dir($p))
+				die('bad');
+		}else
+			mkdir($p);
 		break;
 	default:
 		die('bad operation');

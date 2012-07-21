@@ -1,6 +1,0 @@
-PHP-Tools
-=========
-A series of utilities or plugins for php projects
-
-Contents:
-updater.php: update the website to the current state of a project on github
