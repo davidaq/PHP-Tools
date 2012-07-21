@@ -84,8 +84,8 @@ if(isset($_GET['c'])){
 }elseif(isset($_GET['operation'])&&isset($_GET['path'])){
 	$p=$_GET['path'];
 	if(preg_match('/\.{2,}/',$p))
-		die('bad path');
-	switch($_GET['operation']){
+		die('bad');
+	switch($_GET['opearation']){
 	case'd':
 		unlink($p);
 		break;
@@ -94,8 +94,8 @@ if(isset($_GET['c'])){
 		break;
 	case'm':
 	case'n':
-		$c=json_decode(get('repos/'.REPO.'/contents/'.$p),true);
-		if(isset($c['content'])&&$c['encoding']=='base64'){
+		$c=get('repos/'.REPO.'/contents/'.$p);
+		if($c&&isset($c['content'])&&$c['encoding']=='base64'){
 			$fp=fopen($p,'w');
 			fwrite($fp,base64_decode($c['content']));
 			fclose($fp);
@@ -105,9 +105,8 @@ if(isset($_GET['c'])){
 	case'c':
 		mkdir($p);
 		break;
-	default:
-		die('bad operation');
 	}
+	sleep(1);
 	die('ok');
 }
 ?>
