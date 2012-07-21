@@ -196,6 +196,10 @@ a){var b=F.exec(a);b&&(b[1]=(b[1]||"").toLowerCase(),b[3]=b[3]&&new RegExp("(?:^
 		},'JSON');
 		$.get('<?php echo $_SERVER['REQUEST_URI']?>?ls',function(data){
 			$c=$('#updater');
+			if((data['rmfile'].length+data['rmdir'].length+data['changed'].length+data['newdir'].length+data['newfile'].length)==0){
+				$c.html('<p>Nothing to be changed.</p>');
+				return;
+			}
 			$c.html('<p><button onclick="donext()">Start Updating</button> &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#777">█ Pending</span> <span style="color:#57F">█ Processing</span> <span style="color:#5F7">█ Done</span> <span style="color:#F00">█ Error</span></p>');
 			
 			for(f in data['rmfile']){
@@ -230,7 +234,6 @@ a){var b=F.exec(a);b&&(b[1]=(b[1]||"").toLowerCase(),b[3]=b[3]&&new RegExp("(?:^
 					$c.append('<div>Update complete!</div>');
 				else
 					$c.append('<div>[Error] Update state was not saved</div>');
-					alert(data);
 			});
 			return;
 		}
