@@ -8,7 +8,7 @@ define('REPO','davidaq/PHP-Tools');		// the repo to synchronize with
 // Don't modify the codes below if u are not sure of what these are
 session_start();
 $current_state=json_decode(<<<CURRENT_STATE
-{"last_update":"never","ls":[]}
+{"last_update":"never","ls":[{"type":"dir","path":"fuck"}]}
 CURRENT_STATE
 ,true);
 function get($url){
@@ -29,7 +29,7 @@ if(isset($_GET['c'])){
 	$dirs=array();
 	$files=array();
 	$new_state=array('last_update'=>date('Y-m-d H:i:s',time()),'ls'=>array());
-	function ls($path=''){
+	function ls($path='/'){
 		global $dirs;
 		global $files;
 		global $new_state;
@@ -83,9 +83,9 @@ if(isset($_GET['c'])){
 	)));
 }elseif(isset($_GET['operation'])&&isset($_GET['path'])){
 	$p=$_GET['path'];
-	if($p{0}=='/'||preg_match('/\.{2,}/',$p))
-		die('bad path');
-	switch($_GET['operation']){
+	if(preg_match('/\.{2,}/',$p))
+		die('bad');
+	switch($_GET['opearation']){
 	case'd':
 		unlink($p);
 		break;
@@ -94,8 +94,8 @@ if(isset($_GET['c'])){
 		break;
 	case'm':
 	case'n':
-		$c=json_decode(get('repos/'.REPO.'/contents/'.$p),true);
-		if(isset($c['content'])&&$c['encoding']=='base64'){
+		$c=get('repos/'.REPO.'/contents/'.$p);
+		if($c&&isset($c['content'])&&$c['encoding']=='base64'){
 			$fp=fopen($p,'w');
 			fwrite($fp,base64_decode($c['content']));
 			fclose($fp);
@@ -105,24 +105,9 @@ if(isset($_GET['c'])){
 	case'c':
 		mkdir($p);
 		break;
-	default:
-		die('bad operation');
 	}
+	sleep(1);
 	die('ok');
-}elseif(isset($_GET['done']))
-{
-	if(isset($_SESSION['new_state'])){
-		$f=implode('',file(__FILE__));
-		$f=preg_replace('/(\<\<\<CURRENT_STATE).+?(CURRENT_STATE)/s','$1
-'.$_SESSION['new_state'].'
-$2',$f);
-		$fp=fopen(__FILE__,'w');
-		fwrite($fp,$f);
-		fclose($fp);
-		unset($_SESSION['new_state']);
-		die('ok');
-	}
-	die('bad');
 }
 ?>
 <!doctype html>
@@ -225,13 +210,7 @@ a){var b=F.exec(a);b&&(b[1]=(b[1]||"").toLowerCase(),b[3]=b[3]&&new RegExp("(?:^
 		var job=jobs.pop();
 		$('button')[0].onclick=function(){};
 		if(!job){
-			$.get('<?php echo $_SERVER['REQUEST_URI']?>?done',function(data){
-				if(data=='ok')
-					$c.append('<div>Update complete!</div>');
-				else
-					$c.append('<div>[Error] Update state was not saved</div>');
-					alert(data);
-			});
+			$c.append('<div>Update complete!</div>');
 			return;
 		}
 		$('#updater .job:eq('+doC+')').css({'color':'#57F'});
